@@ -1,4 +1,4 @@
-fn root_html(body: &String) -> String {
+pub fn root_html(body: &str) -> String {
     format!(
         r#"<!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,7 @@ mod tests {
 
     #[test]
     fn test_root_html_returns_html_root() {
-        let html = root_html(&"".to_string());
+        let html = root_html("");
 
         assert_eq!(
             html,
