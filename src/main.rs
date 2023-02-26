@@ -1,4 +1,5 @@
 mod config;
+mod page;
 mod router;
 
 use config::CONFIG;
