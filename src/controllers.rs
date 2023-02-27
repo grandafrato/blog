@@ -2,7 +2,7 @@ use crate::page::root_html;
 use axum::response::Html;
 
 pub async fn index() -> Html<String> {
-    root_html("<h1>Hello</h1>").into()
+    root_html("<h1>Hello</h1>", "Lachlan's Blog").into()
 }
 
 #[cfg(test)]
