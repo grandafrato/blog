@@ -1,19 +1,14 @@
+use askama::Template;
+
+#[derive(Template)]
+#[template(path = "root.html", escape = "none")]
+struct RootHtmlTemplate<'a> {
+    body: &'a str,
+}
+
 pub fn root_html(body: &str) -> String {
-    format!(
-        r#"<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/assets/css/style.css" rel="stylesheet">
-  </head>
-  <body>
-    {}
-  </body>
-</html>"#,
-        body
-    )
+    let template = RootHtmlTemplate { body };
+    template.render().unwrap()
 }
 
 #[cfg(test)]
@@ -30,15 +25,18 @@ mod tests {
             html,
             r#"<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/assets/css/style.css" rel="stylesheet">
-  </head>
-  <body>
-    
-  </body>
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  
+</body>
+
 </html>"#
         );
     }
@@ -52,15 +50,18 @@ mod tests {
                 html,
                 format!(r#"<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/assets/css/style.css" rel="stylesheet">
-  </head>
-  <body>
-    {}
-  </body>
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  {}
+</body>
+
 </html>"#, body)
         );
 

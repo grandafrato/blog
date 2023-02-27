@@ -138,22 +138,24 @@ mod tests {
 
             // Since we're just checking that the beginning and end of the response, we are just
             // ignoring everything in the body tag.
-            let (first_part_of_html, second_part_of_html) = body.split_once("<body>").unwrap();
-            let (_, second_part_of_html) = second_part_of_html.split_once("</body>").unwrap();
+            let (mut first_part_of_html, mut second_part_of_html) =
+                body.split_once("<body>").unwrap();
+            second_part_of_html = second_part_of_html.split_once("</body>").unwrap().1.trim();
+            first_part_of_html = first_part_of_html.trim();
 
             assert_eq!(
                 first_part_of_html,
                 r#"<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/assets/css/style.css" rel="stylesheet">
-  </head>
-  "#
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/assets/css/style.css" rel="stylesheet">
+</head>"#
             );
-            assert_eq!(second_part_of_html, "\n</html>");
+            assert_eq!(second_part_of_html, "</html>");
         }
     }
 }
