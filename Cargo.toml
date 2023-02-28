@@ -11,6 +11,7 @@ axum = "0.6.8"
 hyper = { version = "0.14.24", features = ["full"] }
 lazy_static = "1.4.0"
 serde = { version = "1.0.152", features = ["derive"] }
+sycamore = { version = "0.8.2", features = ["ssr"] }
 tokio = { version = "1.25.0", features = ["full"] }
 tower = "0.4.13"
 tower-http = { version = "0.4.0", features = ["trace", "fs"] }
@@ -20,4 +21,5 @@ tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
 pretty_assertions = "1.3.0"
 proptest = "1.0.0"
 walkdir = "2.3.2"
-scraper = "0.14.0"
+scraper = { git = "https://github.com/causal-agent/scraper.git", rev = "aa479ea170b7f2b463ccba85de0c802318d19abe" }
+selectors = "0.24.0"

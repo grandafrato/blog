@@ -1,4 +1,9 @@
+pub mod index;
+
 use askama::Template;
+use sycamore::render_to_string;
+use sycamore::web::SsrNode;
+use sycamore::{reactive::Scope, view::View};
 
 #[derive(Template)]
 #[template(path = "root.html", escape = "none")]
@@ -7,8 +12,11 @@ struct RootHtmlTemplate<'a> {
     title: &'a str,
 }
 
-pub fn root_html(body: &str, title: &str) -> String {
-    let template = RootHtmlTemplate { body, title };
+pub fn root_html(body: &dyn Fn(Scope) -> View<SsrNode>, title: &str) -> String {
+    let template = RootHtmlTemplate {
+        body: &render_to_string(body),
+        title,
+    };
     template.render().expect("Unable to render root template.")
 }
 
@@ -17,10 +25,11 @@ mod tests {
     use super::*;
     use pretty_assertions::assert_eq;
     use proptest::prelude::*;
+    use sycamore::view;
 
     #[test]
     fn test_root_html_returns_html_root() {
-        let html = root_html("", "");
+        let html = root_html(&|cx| view! { cx, ""}, "");
 
         assert_eq!(
             html,
@@ -45,7 +54,7 @@ mod tests {
     proptest! {
         #[test]
         fn test_root_html_includes_provided_title(title in "\\PC*") {
-            let html = root_html("", &title);
+            let html = root_html(&|cx| view! { cx, "" }, &title);
 
             assert_eq!(
                 html,
@@ -71,7 +80,8 @@ mod tests {
     proptest! {
         #[test]
         fn test_root_html_includes_provided_body(body in "\\PC*") {
-            let html = root_html(&body, "");
+            let b1 = body.clone();
+            let html = root_html(&(move |cx| { view! { cx,  }}), "");
 
             assert_eq!(
                 html,
@@ -89,7 +99,7 @@ mod tests {
   {}
 </body>
 
-</html>"#, body)
+</html>"#, b1)
         );
         }
     }
